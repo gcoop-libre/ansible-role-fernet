@@ -1,0 +1,48 @@
+---
+
+- name: Delete old APT settings
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ fernet_apt_conf_old_list }}"
+  become: true
+  when:
+    - fernet_apt_conf_old_delete is defined
+    - fernet_apt_conf_old_delete | bool
+    - fernet_apt_conf_old_list is defined
+    - fernet_apt_conf_old_list | length > 0
+
+- name: Configure APT Proxy
+  ansible.builtin.lineinfile:
+    create: true
+    line: "{{ item }}"
+    path: "{{ fernet_apt_conf_proxy_path | default('/etc/apt/apt.conf.d/99proxy') }}"
+    mode: "{{ fernet_apt_conf_proxy_mode | default('0600') }}"
+    state: present
+  no_log: "{{ fernet_apt_conf_proxy_no_log | default(true) }}"
+  loop: "{{ fernet_apt_conf_proxy_list }}"
+  become: true
+  when:
+    - fernet_apt_conf_proxy_config is defined
+    - fernet_apt_conf_proxy_config | bool
+    - fernet_apt_conf_proxy_list is defined
+    - fernet_apt_conf_proxy_list | length > 0
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: "{{ fernet_apt_conf_update_cache | default(no) }}"
+    cache_valid_time: "{{ fernet_apt_conf_cache_valid_time | default(3600) }}"
+  changed_when: false
+  become: true
+  when:
+    - fernet_apt_conf_update_cache is defined
+    - fernet_apt_conf_update_cache | bool
+
+- name: Install APT packages
+  ansible.builtin.apt:
+    name: "{{ fernet_apt_packages_list | default([python3]) }}"
+    state: present
+  become: true
+  when:
+    - fernet_apt_packages_install is defined
+    - fernet_apt_packages_install | bool
