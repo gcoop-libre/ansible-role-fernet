@@ -1,7 +1,8 @@
 # Ansible Role: `gcoop-libre.fernet`
 
-
-
+| _date_     | _tag_      | _description_        |
+|------------|------------|----------------------|
+| 2025-09-30 | `  v0.1.0` | first public release |
 
 See details of changes in [`CHANGELOG.md`](CHANGELOG.md).
 
