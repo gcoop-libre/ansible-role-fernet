@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import sys
+import re
+from cryptography.fernet import Fernet
+
+
+def _get_key() -> bytes:
+    return b"{{ fernet_key }}"
+
+
+def _decrypt(cipher_text: bytes, fernet: Fernet) -> bytes:
+    return fernet.decrypt(cipher_text)
+
+
+def main() -> None:
+    key = _get_key()
+    fernet = Fernet(key)
+    pattern = re.compile(b'gAAAAAB[a-zA-Z0-9+_/=-]+')
+
+    for line in sys.stdin.buffer:
+        cipher_bytes = line.rstrip(b'\n')
+        if not cipher_bytes:
+            continue
+
+        def repl(match: re.Match[bytes]) -> bytes:
+            token = match.group(0)
+            try:
+                return _decrypt(token, fernet)
+            except Exception:
+                return token
+
+        plain_bytes = pattern.sub(repl, cipher_bytes)
+
+        if plain_bytes.endswith(b'\n'):
+            sys.stdout.buffer.write(plain_bytes)
+        else:
+            sys.stdout.buffer.write(plain_bytes + b'\n')
+
+
+if __name__ == "__main__":
+    main()
