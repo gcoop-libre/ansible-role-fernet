@@ -1,0 +1,8 @@
+---
+
+- name: Test Fernet (symmetric encryption)
+  hosts: [all]
+  become: true
+
+  roles:
+    - gcoop-libre.fernet
