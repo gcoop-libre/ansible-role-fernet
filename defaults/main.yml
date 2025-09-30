@@ -1,0 +1,122 @@
+---
+
+ansible_python_interpreter: /usr/bin/python3
+default_domain: "{{ ansible_domain | default('example.org') }}"
+fernet_env:
+  GIT_SSL_NO_VERIFY: true
+  http_proxy: '{{ fernet_http_proxy_url }}'
+  https_proxy: '{{ fernet_http_proxy_url }}'
+  no_proxy: 127.0.0.1, localhost, {{ default_domain | default('example.org') }}
+fernet_apt_conf: true
+fernet_apt_packages_install: true
+fernet_apt_packages_list:
+  - python3-pip
+  - python3-virtualenv
+fernet_apt_pin_cache_valid_time: 3600
+fernet_apt_pin_group: root
+fernet_apt_pin_install: false
+fernet_apt_pin_mode: '0644'
+fernet_apt_pin_owner: root
+fernet_apt_pin_packages: []
+fernet_apt_pin_preferences: false
+fernet_apt_pin_priority: 500
+fernet_apt_pin_update_cache: false
+fernet_bin_info: true
+fernet_bin_ldd: true
+fernet_bin_ldd_cmd: ldd
+fernet_bin_ldd_regex: '\/[a-zA-Z0-9\\.\\/\\_\\-]+'
+fernet_bin_readelf: true
+fernet_bin_readelf_cmd: readelf -h
+fernet_dir: /opt/fernet
+fernet_dir_clean: true
+fernet_dir_dist: '{{ fernet_dir }}/dist'
+fernet_dir_dist_group: '{{ fernet_dir_dist_owner }}'
+fernet_dir_dist_mode: '0775'
+fernet_dir_dist_owner: root
+fernet_dir_exists: true
+fernet_dir_group: '{{ fernet_dir_owner }}'
+fernet_dir_mode: '0775'
+fernet_dir_owner: root
+fernet_dir_source: '{{ fernet_dir }}/src'
+fernet_dir_source_clean: true
+fernet_dir_source_group: '{{ fernet_dir_source_owner }}'
+fernet_dir_source_mode: '0700'
+fernet_dir_source_owner: root
+fernet_dir_tmp: '{{ fernet_dir }}/tmp'
+fernet_dir_tmp_exists: true
+fernet_dir_tmp_group: '{{ fernet_dir_dist_owner }}'
+fernet_dir_tmp_mode: '0777'
+fernet_dir_tmp_owner: root
+fernet_encrypted_regex: 'gAAAAAB[a-zA-Z0-9+_/=\-]+'
+fernet_global_path: true
+fernet_global_path_group: root
+fernet_global_path_mode: '0755'
+fernet_global_path_owner: root
+fernet_http_proxy_url:
+fernet_key_gen_cmd: openssl rand -base64 32
+fernet_key_regex: '^[A-Za-z0-9\/\+_-]{43}=$'
+fernet_pyinstaller_decrypt_cmd: "{{ fernet_venv_pyinstaller }} {{ fernet_decrypt_source_file }} {{ fernet_pyinstaller_opt | join(' ') }}"
+fernet_pyinstaller_encrypt_cmd: "{{ fernet_venv_pyinstaller }} {{ fernet_encrypt_source_file }} {{ fernet_pyinstaller_opt | join(' ') }}"
+fernet_pyinstaller_opt:
+  - --clean
+  - --onefile
+  - --distpath {{ fernet_dir_dist }}
+  - --runtime-tmpdir {{ fernet_dir_tmp }}
+  - --hidden-import=cffi
+  - --hidden-import=cryptography
+  - --add-binary /lib/x86_64-linux-gnu/libc.so.6:.
+  - --add-binary /lib/x86_64-linux-gnu/libpthread.so.0:.
+  - --add-binary /lib/x86_64-linux-gnu/libz.so.1:.
+  - --add-binary /lib/x86_64-linux-gnu/libdl.so.2:.
+fernet_apt_conf_old_delete: false
+fernet_apt_conf_proxy_config: false
+fernet_apt_conf_update_cache: false
+fernet_decrypt_dist_file: pd
+fernet_decrypt_dist_group: root
+fernet_decrypt_dist_mode: '0700'
+fernet_decrypt_dist_owner: root
+fernet_decrypt_dist_path: '{{ fernet_dir_dist }}/{{ fernet_decrypt_dist_file }}'
+fernet_decrypt_source_file: pd
+fernet_decrypt_source_group: root
+fernet_decrypt_source_mode: '0700'
+fernet_decrypt_source_owner: root
+fernet_decrypt_source_path: '{{ fernet_dir_source }}/{{ fernet_decrypt_source_file }}'
+fernet_decrypt_source_venv: '{{ fernet_venv_python }} {{ fernet_decrypt_source_path }}'
+fernet_encrypt_dist_file: pe
+fernet_encrypt_dist_group: root
+fernet_encrypt_dist_mode: '0700'
+fernet_encrypt_dist_owner: root
+fernet_encrypt_dist_path: '{{ fernet_dir_dist }}/{{ fernet_encrypt_dist_file }}'
+fernet_encrypt_dist_venv: '{{ fernet_venv_python }} {{ fernet_encrypt_dist_path }}'
+fernet_encrypt_source_file: pe
+fernet_encrypt_source_group: root
+fernet_encrypt_source_mode: '0700'
+fernet_encrypt_source_owner: root
+fernet_encrypt_source_path: '{{ fernet_dir_source }}/{{ fernet_encrypt_source_file }}'
+fernet_encrypt_source_venv: '{{ fernet_venv_python }} {{ fernet_encrypt_source_path }}'
+fernet_pip_packages_install: true
+fernet_pip_venv: true
+fernet_pip_packages_list:
+  - name: cryptography
+    version: 46.0.1
+    virtualenv: '{{ fernet_venv_dir }}'
+    virtualenv_command: '{{ fernet_venv_cmd }}'
+  - name: pyinstaller
+    version: 6.15.0
+    virtualenv: '{{ fernet_venv_dir }}'
+    virtualenv_command: '{{ fernet_venv_cmd }}'
+fernet_test_decrypt_txt: TestPipeDecrypt
+fernet_test_dist_decrypt: true
+fernet_test_dist_encrypt: true
+fernet_test_dist_encrypt_cmd: echo {{ fernet_test_encrypt_txt }} | {{ fernet_encrypt_dist_path }}
+fernet_test_encrypt_decrypt: true
+fernet_test_encrypt_decrypt_cmd: echo {{ fernet_test_encrypt_decrypt_txt }} | {{ fernet_encrypt_source_venv }} | {{ fernet_decrypt_source_venv }}
+fernet_test_encrypt_decrypt_txt: TestPipeEncryptPipeDecrypt
+fernet_test_encrypt_txt: TestPipeEncrypt
+fernet_venv_bin: '{{ fernet_venv_dir }}/bin'
+fernet_venv_clean: true
+fernet_venv_cmd: '{{ ansible_python_interpreter }} -m venv'
+fernet_venv_dir: '{{ fernet_dir }}/venv'
+fernet_venv_exists: true
+fernet_venv_pyinstaller: '{{ fernet_venv_bin }}/pyinstaller'
+fernet_venv_python: '{{ fernet_venv_bin }}/python3'
