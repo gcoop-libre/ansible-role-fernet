@@ -1,0 +1,20 @@
+---
+
+galaxy_info:
+  author: Osiris Alejandro Gomez
+  company: gcoop Cooperativa de Software Libre
+  description: Ansible role to build Fernet (symmetric encryption) pipe commands
+  license: GPLv3
+  min_ansible_version: '2.16'
+  namespace: gcoop-libre
+  role_name: fernet
+  platforms:
+    - name: Debian
+      versions:
+        - all
+  galaxy_tags:
+    - decrypt
+    - encrypt
+    - fernet
+    - pip
+dependencies: []

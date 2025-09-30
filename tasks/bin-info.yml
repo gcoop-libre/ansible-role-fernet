@@ -1,0 +1,55 @@
+---
+
+- name: Execute readelf {{ item }}
+  ansible.builtin.command: "{{ fernet_bin_readelf_cmd }} {{ item }}"
+  args:
+    chdir: "{{ fernet_dir_dist }}"
+  changed_when: false
+  no_log: "{{ fernet_bin_readelf_no_log | default(true) }}"
+  register: fernet_bin_readelf_cmd_result
+  when:
+    - fernet_bin_readelf is defined
+    - fernet_bin_readelf | bool
+    - fernet_bin_readelf_cmd is defined
+    - fernet_bin_readelf_cmd | length > 0
+
+- name: Debug ELF {{ item }}
+  ansible.builtin.debug:
+    msg: "{{ fernet_bin_readelf_cmd_result.stdout_lines }}"
+    verbosity: "{{ fernet_bin_debug_verbosity | default(2) }}"
+  when:
+    - fernet_bin_readelf_cmd_result is defined
+    - fernet_bin_readelf_cmd_result.stdout_lines | length > 0
+
+- name: Execute ldd {{ item }}
+  ansible.builtin.command: "{{ fernet_bin_ldd_cmd }} {{ item }}"
+  args:
+    chdir: "{{ fernet_dir_dist }}"
+  changed_when: false
+  no_log: "{{ fernet_bin_ldd_no_log | default(true) }}"
+  register: fernet_bin_ldd_cmd_result
+  when:
+    - fernet_bin_ldd is defined
+    - fernet_bin_ldd | bool
+
+- name: Get Encrypt Shared Libs {{ item }}
+  ansible.builtin.set_fact:
+    fernet_bin_ldd_libs: >-
+      {{ fernet_bin_ldd_cmd_result.stdout_lines
+      | map('regex_search', fernet_bin_ldd_regex)
+      | reject('none')
+      | list }}
+  no_log: "{{ fernet_bin_ldd_no_log | default(true) }}"
+  when:
+    - fernet_bin_ldd_cmd_result is defined
+    - fernet_bin_ldd_cmd_result.stdout_lines is defined
+    - fernet_bin_ldd_cmd_result.stdout_lines | length > 0
+
+- name: Debug Shared Libs {{ item }}
+  ansible.builtin.debug:
+    msg: "{{ fernet_bin_ldd_libs }}"
+    verbosity: "{{ fernet_bin_debug_verbosity | default(2) }}"
+  when:
+    - fernet_bin_ldd_cmd_result is defined
+    - fernet_bin_ldd_libs is defined
+    - fernet_bin_ldd_libs | length > 0

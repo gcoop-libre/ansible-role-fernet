@@ -1,0 +1,25 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+    rev: v6.0.0
+  - repo: https://github.com/detailyang/pre-commit-shell
+    hooks:
+      - id: shell-lint
+    rev: v1.0.6
+  - repo: https://github.com/ansible-community/ansible-lint
+    hooks:
+      - files: \.(yaml|yml)$
+        id: ansible-lint
+        pass_filenames: true
+    rev: v25.9.0
+  - repo: https://github.com/pycqa/pylint
+    hooks:
+      - args:
+          - --disable=import-error
+          - --ignore-patterns=^\.cache/|^cache/|^__pycache__/
+        exclude: ^\.cache/|^cache/|^__pycache__/
+        files: \.py$
+        id: pylint
+    rev: v3.3.8
