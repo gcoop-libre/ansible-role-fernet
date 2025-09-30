@@ -1,0 +1,16 @@
+---
+
+- name: Verify exists directory virtualenv {{ fernet_venv_dir }}
+  ansible.builtin.stat:
+    path: '{{ fernet_venv_dir }}'
+  register: fernet_venv_dir_stat
+  when:
+    - fernet_venv_dir is defined
+
+- name: Initialize virtualenv {{ fernet_venv_dir }}
+  ansible.builtin.command: '{{ fernet_venv_cmd }} {{ fernet_venv_dir }}'
+  changed_when: false
+  when:
+    - fernet_venv_dir_stat is defined
+    - not fernet_venv_dir_stat.stat.exists | bool
+    - fernet_venv_cmd is defined
