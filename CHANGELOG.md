@@ -1,9 +1,57 @@
-# [_GCOOP-LIBRE.FERNET CHANGELOG_](https://github.com/gcoop-libre/ansible-role-fernet)
+# [_ANSIBLE-ROLE-FERNET CHANGELOG_](https://github.com/gcoop-libre/ansible-role-fernet)
 
  - this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
-## [`Unreleased - 2025-09-30`](https://github.com/gcoop-libre/ansible-role-fernet/-/compare/v0.1.0...develop)
+## [`Unreleased - 2025-10-02`](https://github.com/gcoop-libre/ansible-role-fernet/-/compare/v0.1.1...develop)
 
+
+### `CHANGELOG`
+
+- update Unreleased and add v0.1.0
+
+### `README`
+
+- add v0.1.0 in tags summary
+
+## [`v0.1.1 - 2025-10-02`](https://github.com/gcoop-libre/ansible-role-fernet/-/compare/v0.1.0...v0.1.1) _don't build when encrypt/decrypt binaries already exists, allow force build and add symbolic link to the gcoop-libre.fernet role in tests/roles for easier test execution_
+
+
+### `defaults/main`
+
+- enable fernet_decrypt_dist_remote
+- enable fernet_encrypt_dist_remote
+- enable fernet_check_dist_remote
+- disable fernet_build_remote_force
+
+### `tasks/build`
+
+- move all build tasks and dependencies from main.yml to build.yml
+
+### `tasks/main`
+
+- include bin info tasks when fernet_bin_info is enabled
+- incude build tasks when fernet_build_remote_force is enabled or encrypt and decrypt binaries don't exists
+- include verify in remote tasks when fernet_check_dist_remote is enabled
+- disable fernet_encrypt_dist_remote_exists and fernet_decrypt_dist_remote_exists on start
+
+### `tasks/verify-remote`
+
+- enable fernet_decrypt_dist_remote_exists when decrypt binary exists and is executable
+- verify in remote if exists decrypt binary when fernet_decrypt_dist_remote is enabled
+- enable fernet_encrypt_dist_remote_exists when encrypt binary exists and is executable
+- verify in remote if exists encrypt binary when fernet_encrypt_dist_remote is enabled
+
+### `tests/gcoop-libre`
+
+- add symbolic link to the role gcoop-libre.fernet in tests/roles
+
+### `tests/requirements`
+
+- set version as v0.1.1 for gcoop-libre.fernet
+
+### `VERSION`
+
+- Bump version to v0.1.1
 
 ## [`v0.1.0 - 2025-09-30`](https://github.com/gcoop-libre/ansible-role-fernet/-/compare/6a33d07...v0.1.0) _first public release_
 
