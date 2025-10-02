@@ -1,5 +1,10 @@
 ---
 
+- name: Disable fernet_encrypt_dist_remote_exists and fernet_decrypt_dist_remote_exists
+  ansible.builtin.set_fact:
+    fernet_encrypt_dist_remote_exists: false
+    fernet_decrypt_dist_remote_exists: false
+
 - name: Include APT tasks
   ansible.builtin.include_tasks: apt.yml
   when:
