@@ -34,3 +34,14 @@
     - fernet_decrypt_dist_path is defined
     - fernet_decrypt_dist_remote is defined
     - fernet_decrypt_dist_remote | bool
+
+- name: Enable fernet_decrypt_dist_remote_exists
+  ansible.builtin.set_fact:
+    fernet_decrypt_dist_remote_exists: true
+  when:
+    - fernet_decrypt_dist_remote_result is defined
+    - fernet_decrypt_dist_remote_result.stat is defined
+    - fernet_decrypt_dist_remote_result.stat.exists is defined
+    - fernet_decrypt_dist_remote_result.stat.exists | bool
+    - fernet_decrypt_dist_remote_result.stat.executable is defined
+    - fernet_decrypt_dist_remote_result.stat.executable | bool
