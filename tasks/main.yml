@@ -15,3 +15,12 @@
   ansible.builtin.include_tasks: build.yml
   when:
     - (fernet_build_remote_force | bool) or (not fernet_encrypt_dist_remote_exists | bool) or (not fernet_decrypt_dist_remote_exists)
+
+- name: Include bin info tasks
+  ansible.builtin.include_tasks: bin-info.yml
+  loop:
+    - "{{ fernet_encrypt_dist_file }}"
+    - "{{ fernet_decrypt_dist_file }}"
+  when:
+    - fernet_bin_info is defined
+    - fernet_bin_info | bool
