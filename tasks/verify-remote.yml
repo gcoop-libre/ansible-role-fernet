@@ -1,0 +1,47 @@
+---
+
+- name: Verify in remote if exists {{ fernet_encrypt_dist_path }}
+  ansible.builtin.stat:
+    path: "{{ fernet_encrypt_dist_path }}"
+    get_checksum: true
+    checksum_algorithm: sha256
+  become: false
+  register: fernet_encrypt_dist_remote_result
+  when:
+    - fernet_encrypt_dist_path is defined
+    - fernet_encrypt_dist_remote is defined
+    - fernet_encrypt_dist_remote | bool
+
+- name: Enable fernet_encrypt_dist_remote_exists
+  ansible.builtin.set_fact:
+    fernet_encrypt_dist_remote_exists: true
+  when:
+    - fernet_encrypt_dist_remote_result is defined
+    - fernet_encrypt_dist_remote_result.stat is defined
+    - fernet_encrypt_dist_remote_result.stat.exists is defined
+    - fernet_encrypt_dist_remote_result.stat.exists | bool
+    - fernet_encrypt_dist_remote_result.stat.executable is defined
+    - fernet_encrypt_dist_remote_result.stat.executable | bool
+
+- name: Verify in remote if exists {{ fernet_decrypt_dist_path }}
+  ansible.builtin.stat:
+    path: "{{ fernet_decrypt_dist_path }}"
+    get_checksum: true
+    checksum_algorithm: sha256
+  become: false
+  register: fernet_decrypt_dist_remote_result
+  when:
+    - fernet_decrypt_dist_path is defined
+    - fernet_decrypt_dist_remote is defined
+    - fernet_decrypt_dist_remote | bool
+
+- name: Enable fernet_decrypt_dist_remote_exists
+  ansible.builtin.set_fact:
+    fernet_decrypt_dist_remote_exists: true
+  when:
+    - fernet_decrypt_dist_remote_result is defined
+    - fernet_decrypt_dist_remote_result.stat is defined
+    - fernet_decrypt_dist_remote_result.stat.exists is defined
+    - fernet_decrypt_dist_remote_result.stat.exists | bool
+    - fernet_decrypt_dist_remote_result.stat.executable is defined
+    - fernet_decrypt_dist_remote_result.stat.executable | bool
