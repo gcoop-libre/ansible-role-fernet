@@ -5,6 +5,12 @@
     fernet_encrypt_dist_remote_exists: false
     fernet_decrypt_dist_remote_exists: false
 
+- name: Include verify in remote tasks
+  ansible.builtin.include_tasks: verify-remote.yml
+  when:
+    - fernet_check_dist_remote is defined
+    - fernet_check_dist_remote | bool
+
 - name: Include APT tasks
   ansible.builtin.include_tasks: apt.yml
   when:
