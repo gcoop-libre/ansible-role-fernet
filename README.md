@@ -1,8 +1,9 @@
 # Ansible Role: `gcoop-libre.fernet`
 
-| _date_     | _tag_      | _description_        |
-|------------|------------|----------------------|
-| 2025-09-30 | `  v0.1.0` | first public release |
+| _date_     | _tag_      | _description_                                                                                                                                                             |
+|------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 2025-10-02 | `  v0.1.1` | don't build when encrypt/decrypt binaries already exists, allow force build and add symbolic link to the gcoop-libre.fernet role in tests/roles for easier test execution |
+| 2025-09-30 | `  v0.1.0` | first public release                                                                                                                                                      |
 
 See details of changes in [`CHANGELOG.md`](CHANGELOG.md).
 
