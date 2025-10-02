@@ -12,3 +12,13 @@
     - fernet_encrypt_dist_remote is defined
     - fernet_encrypt_dist_remote | bool
 
+- name: Enable fernet_encrypt_dist_remote_exists
+  ansible.builtin.set_fact:
+    fernet_encrypt_dist_remote_exists: true
+  when:
+    - fernet_encrypt_dist_remote_result is defined
+    - fernet_encrypt_dist_remote_result.stat is defined
+    - fernet_encrypt_dist_remote_result.stat.exists is defined
+    - fernet_encrypt_dist_remote_result.stat.exists | bool
+    - fernet_encrypt_dist_remote_result.stat.executable is defined
+    - fernet_encrypt_dist_remote_result.stat.executable | bool
