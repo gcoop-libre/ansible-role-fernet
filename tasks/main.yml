@@ -11,3 +11,7 @@
     - fernet_check_dist_remote is defined
     - fernet_check_dist_remote | bool
 
+- name: Include build tasks
+  ansible.builtin.include_tasks: build.yml
+  when:
+    - (fernet_build_remote_force | bool) or (not fernet_encrypt_dist_remote_exists | bool) or (not fernet_decrypt_dist_remote_exists)
