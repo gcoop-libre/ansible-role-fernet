@@ -30,6 +30,7 @@ fernet_bin_readelf_cmd: readelf -h
 fernet_build_remote_force: false
 fernet_check_dist_remote: true
 fernet_encrypt_dist_remote: true
+fernet_decrypt_dist_remote: true
 fernet_dir: /opt/fernet
 fernet_dir_clean: true
 fernet_dir_dist: '{{ fernet_dir }}/dist'
