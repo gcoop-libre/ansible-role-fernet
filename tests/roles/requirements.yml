@@ -2,5 +2,5 @@
 
 - src: https://github.com/gcoop-libre/ansible-role-fernet
   scm: git
-  version: v0.1.0
+  version: v0.1.1
   name: gcoop-libre.fernet
